@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pembayaran - DapurKost</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+:root{
+    --cream:#FEF9E1;
+    --beige:#E5D0AC;
+    --red:#A31D1D;
+    --darkred:#6D2323;
+}
+
+body{
+    background:var(--cream);
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar{
+    min-height:80px;
+}
+
+.navbar-brand{
+    color:var(--darkred);
+    font-weight:700;
+}
+
+/* HEADER */
+
+.payment-header{
+    background:linear-gradient(
+        135deg,
+        var(--red),
+        var(--darkred)
+    );
+    color:white;
+    padding:60px 0;
+}
+
+/* CARD */
+
+.payment-card,
+.summary-card{
+    border:none;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+/* PAYMENT METHOD */
+
+.method-item{
+    border:2px solid #eee;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.method-item:hover{
+    border-color:var(--red);
+}
+
+.method-item.active{
+    border-color:var(--red);
+    background:#fff8f8;
+}
+
+/* PAYMENT INFO */
+
+.payment-info{
+    background:#fff8f8;
+    border-radius:15px;
+    padding:20px;
+    display:none;
+}
+
+.account-number{
+    font-size:24px;
+    font-weight:700;
+    color:var(--red);
+}
+
+/* TOTAL */
+
+.total{
+    font-size:30px;
+    font-weight:700;
+    color:var(--red);
+}
+
+/* BUTTON */
+
+.btn-main{
+    background:var(--red);
+    color:white;
+    border:none;
+    border-radius:15px;
+    height:55px;
+    font-weight:600;
+}
+
+.btn-main:hover{
+    background:var(--darkred);
+    color:white;
+}
+
+.upload-box{
+    border:2px dashed #ccc;
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+    margin-top:20px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:991px){
+
+.payment-header{
+padding:50px 20px;
+}
+
+.payment-header h1{
+font-size:32px;
+}
+
+}
+
+@media(max-width:576px){
+
+.navbar{
+min-height:70px;
+}
+
+.payment-header{
+padding:40px 15px;
+}
+
+.payment-header h1{
+font-size:28px;
+}
+
+.payment-card,
+.summary-card{
+border-radius:20px;
+}
+
+.total{
+font-size:24px;
+}
+
+.account-number{
+font-size:20px;
+word-break:break-all;
+}
+
+.btn-main{
+height:50px;
+}
+
+.upload-box{
+padding:20px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+
+<div class="container">
+
+<a class="navbar-brand" href="home.html">
+🍲 DapurKost
+</a>
+
+<a href="checkout.html"
+class="btn btn-outline-danger rounded-pill">
+<i class="bi bi-arrow-left"></i>
+ Kembali
+</a>
+
+</div>
+
+</nav>
+
+<!-- HEADER -->
+
+<section class="payment-header">
+
+<div class="container text-center">
+
+<h1>Pembayaran Pesanan</h1>
+
+<p>
+Pilih metode pembayaran dan unggah bukti transfer.
+</p>
+
+</div>
+
+</section>
+
+<div class="container py-5">
+
+<div class="row g-4">
+
+<!-- PAYMENT -->
+
+<div class="col-lg-7">
+
+<div class="card payment-card p-4">
+
+<h4 style="color:#6D2323;">
+💳 Pilih Metode Pembayaran
+</h4>
+
+<div class="mt-4">
+
+<div class="method-item" onclick="selectMethod('BCA')">
+🏦 Transfer Bank BCA
+</div>
+
+<div class="method-item" onclick="selectMethod('BRI')">
+🏦 Transfer Bank BRI
+</div>
+
+<div class="method-item" onclick="selectMethod('Dana')">
+💙 Dana
+</div>
+
+<div class="method-item" onclick="selectMethod('GoPay')">
+🟢 GoPay
+</div>
+
+</div>
+
+<!-- INFO -->
+
+<div class="payment-info mt-4" id="paymentInfo">
+
+<h5 id="paymentTitle"></h5>
+
+<p class="mb-1">
+Nomor Tujuan:
+</p>
+
+<div class="account-number" id="accountNumber">
+1234567890
+</div>
+
+<p class="mt-2">
+a.n DapurKost
+</p>
+
+<button class="btn btn-outline-danger"
+onclick="copyNumber()">
+
+<i class="bi bi-copy"></i>
+ Copy Nomor
+
+</button>
+
+<div class="upload-box">
+
+<i class="bi bi-cloud-arrow-up fs-1"></i>
+
+<p class="mt-3">
+Upload Bukti Pembayaran
+</p>
+
+<input
+type="file"
+class="form-control">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div class="col-lg-5">
+
+<div class="card summary-card p-4">
+
+<h4 style="color:#6D2323;">
+🛒 Ringkasan
+</h4>
+
+<hr>
+
+<div class="d-flex justify-content-between">
+<span>Paket Mingguan</span>
+<span>Rp150.000</span>
+</div>
+
+<div class="d-flex justify-content-between mt-2">
+<span>Menu Pilihan</span>
+<span>Rp20.000</span>
+</div>
+
+<div class="d-flex justify-content-between mt-2">
+<span>Ongkir</span>
+<span>Gratis</span>
+</div>
+
+<hr>
+
+<div class="d-flex justify-content-between align-items-center">
+
+<h5>Total</h5>
+
+<div class="total">
+Rp170.000
+</div>
+
+</div>
+
+<button
+class="btn btn-main w-100 mt-4"
+onclick="confirmPayment()">
+
+Konfirmasi Pembayaran
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal fade" id="successModal">
+
+<div class="modal-dialog modal-dialog-centered">
+
+<div class="modal-content">
+
+<div class="modal-body text-center p-5">
+
+<div style="font-size:80px;">
+🎉
+</div>
+
+<h3>Pembayaran Berhasil!</h3>
+
+<p>
+Pesananmu sedang menunggu konfirmasi admin.
+</p>
+
+<a
+href="riwayat-pesanan.html"
+class="btn btn-main mt-3 px-4">
+
+Lihat Riwayat Pesanan
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function selectMethod(method){
+
+document.querySelectorAll('.method-item')
+.forEach(item=>item.classList.remove('active'));
+
+event.currentTarget.classList.add('active');
+
+document.getElementById('paymentInfo')
+.style.display='block';
+
+document.getElementById('paymentTitle')
+.innerText=method;
+
+}
+
+function copyNumber(){
+
+navigator.clipboard.writeText("1234567890");
+
+alert("Nomor berhasil disalin!");
+
+}
+
+function confirmPayment(){
+
+let modal =
+new bootstrap.Modal(
+document.getElementById('successModal')
+);
+
+modal.show();
+
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
